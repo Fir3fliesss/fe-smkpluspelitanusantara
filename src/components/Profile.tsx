@@ -1,27 +1,36 @@
+import { useTheme } from '../contexts/ThemeContexts';
 import React from 'react';
 import sun from "../assets/icons/sun.svg";
+import moon from "../assets/icons/moon.svg";
 
 const Profile: React.FC = () => {
+
+  const { isDarkMode, toggleTheme } = useTheme();
+
   return (
     <>
       <div className="mt-12 flex justify-center items-center">
-        <button>
-          <img src={sun} alt="logowithtext" className="w-12 transition ease-in-out" />
+        <button onClick={toggleTheme}>
+          <img
+            src={isDarkMode ? moon : sun}
+            alt="toggle theme"
+            className="w-12 transition ease-in-out transition-transform-[0.3s]"
+          />
         </button>
       </div>
       <section className="mt-6">
         <div className="flex flex-col items-center">
-          <h1 className="md:mb-2 xl:mb-2 font-bold text-2xl md:text-4xl xl:text-6xl text-center">
+          <h1 className="md:mb-2 xl:mb-2 font-bold text-2xl md:text-4xl xl:text-6xl text-center dark:text-slate-200">
             Sekolah Menengah Kejuruan
           </h1>
-          <h1 className="md:mb-2 xl:mb-2 font-medium text-2xl md:text-4xl xl:text-6xl text-center">
+          <h1 className="md:mb-2 xl:mb-2 font-medium text-2xl md:text-4xl xl:text-6xl text-center dark:text-slate-200">
             Plus Pelita Nusantara
           </h1>
-          <p className="mt-6 items-center text-center max-w-[55%] md:text-xl xl:text-2xl">
+          <p className="mt-6 items-center text-center max-w-[55%] md:text-xl xl:text-2xl dark:text-slate-200">
             Menjadi Sekolah Menengah Kejuruan Unggulan yang menghasilkan sumber daya manusia <b>Terampil</b>, <b>Entrepreneur</b>, dan <b>Religius</b>.
           </p>
         </div>
-        <hr className="mt-6 w-24 h-px mb-6 mx-auto bg-gray-400 border-0 rounded-full" />
+        <hr className="mt-6 w-24 h-px mb-6 mx-auto bg-gray-400 border-0 rounded-full dark:text-slate-200" />
         <div className="mt-6 flex justify-center">
           <figure className="max-w-screen-md mx-auto text-center">
             <svg className="w-5 h-5 mx-auto mb-3 text-gray-400 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 14">
@@ -30,13 +39,13 @@ const Profile: React.FC = () => {
             <blockquote className="flex justify-center text-justify">
               <ul>
                 <li>
-                  <p className="text-xl text-center italic font-medium text-gray-900">"Successed By Character!</p>
+                  <p className="text-xl text-center italic font-medium text-gray-900 dark:text-slate-200">"Successed By Character!</p>
                 </li>
                 <li>
-                  <p className="text-xl text-center italic font-medium text-gray-900">We Are Different!</p>
+                  <p className="text-xl text-center italic font-medium text-gray-900 dark:text-slate-200">We Are Different!</p>
                 </li>
                 <li>
-                  <p className="text-xl text-center italic font-medium text-gray-900">The Future is Ours!"</p>
+                  <p className="text-xl text-center italic font-medium text-gray-900 dark:text-slate-200">The Future is Ours!"</p>
                 </li>
               </ul>
             </blockquote>
@@ -47,7 +56,7 @@ const Profile: React.FC = () => {
             </figcaption>
           </figure>
         </div>
-        <hr className="mt-6 w-24 h-px mb-6 mx-auto bg-gray-400 border-0 rounded-full" />
+        <hr className="mt-6 w-24 h-px mb-6 mx-auto bg-gray-400 dark:text-slate-200 border-0 rounded-full" />
       </section>
     </>
   );

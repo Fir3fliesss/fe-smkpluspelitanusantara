@@ -1,5 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import BannerText from './BannerText';
+import Button from './Button';
 
 interface NewsItem {
   id: number;
@@ -28,8 +30,9 @@ const LastestNews: React.FC = () => {
     queryFn: fetchNewsItems,
   });
 
+
   if (isLoading) {
-    return <div className="text-center mt-8">Loading...</div>;
+    return <div className="text-center mt-8 text-gray-900 dark:text-slate-200">Loading...</div>;
   }
 
   if (isError) {
@@ -38,9 +41,7 @@ const LastestNews: React.FC = () => {
 
   return (
     <section id="berita">
-      <h1 className="pt-4 pb-4 font-bold text-slate-200 text-center text-xl md:text-2xl xl:text-4xl bg-gradient-to-tr from-red-800 via-red-700 to-red-600">
-        Latest News!
-      </h1>
+      <BannerText text="Latest News!" />
 
       <div className="container px-5 mx-auto max-w-7xl">
         <div className="flex flex-wrap justify-center gap-4 mt-4">
@@ -102,9 +103,7 @@ const LastestNews: React.FC = () => {
 
       <div className="mt-6 mb-6 flex justify-center">
         <a href="#berita">
-          <button className="md:w-48 md:h-16 bg-gradient-to-r from-red-800 via-red-600 to-red-500 text-white font-bold py-2 px-4 rounded-full shadow-xl hover:scale-105 transition-transform duration-300">
-            Lihat Lebih Banyak
-          </button>
+          <Button text="Lihat Lebih Banyak" /> 
         </a>
       </div>
     </section>
