@@ -1,6 +1,7 @@
 import React from 'react';
 import banner from '../assets/images/banner_ajakan_bergabung.webp';
 
+
 const CallToAction: React.FC = () => {
   return (
     <section className="mt-6 md:mt-8 xl:mt-16">
