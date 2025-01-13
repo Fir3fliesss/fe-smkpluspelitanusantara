@@ -1,6 +1,6 @@
 const HeaderVideoContent: React.FC = () => {
     return (
-        <video src="/assets/videos/header-content.mp4"
+        <video src="/assets/videos-hls/header-content.mp4"
         autoPlay loop muted playsInline />
     )
 }

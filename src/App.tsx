@@ -1,7 +1,8 @@
 import React from 'react';
 import Header from './components/Header';
 // import VideoPlayer from './components/VideoPlayer';
-import HeaderVideoContent from './components/HeaderVideoContent';
+import VideoPlayerDash from './components/VideolayerDash';
+// import HeaderVideoContent from './components/HeaderVideoContent';
 import Profile from './components/Profile';
 import BidangKeahlian from './components/BidangKeahlian';
 import Sapras from './components/Sapras';
@@ -16,11 +17,15 @@ const App: React.FC = () => {
     <div className="dark:bg-slate-900">
       <Header />
 
-      <HeaderVideoContent />
+      {/* <HeaderVideoContent /> */}
 
       {/* <section id="video-player">
         <VideoPlayer />
       </section> */}
+
+      <section id="video-player">
+        <VideoPlayerDash />
+      </section>
 
       <section id="profile">
         <Profile />
