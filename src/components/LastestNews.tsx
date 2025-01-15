@@ -103,7 +103,7 @@ const LastestNews: React.FC = () => {
 
       <div className="mt-6 mb-6 flex justify-center">
         <a href="#berita">
-          <Button text="Lihat Lebih Banyak" /> 
+          <Button text="Lihat Lebih Banyak" />
         </a>
       </div>
     </section>

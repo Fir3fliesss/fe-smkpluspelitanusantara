@@ -1,27 +1,21 @@
 import React from 'react';
 import Header from './components/Header';
-// import VideoPlayer from './components/VideoPlayer';
 import VideoPlayerDash from './components/VideolayerDash';
-// import HeaderVideoContent from './components/HeaderVideoContent';
 import Profile from './components/Profile';
 import BidangKeahlian from './components/BidangKeahlian';
 import Sapras from './components/Sapras';
-import LastestNews from './components/LastestNews';
+// import LastestNews from './components/LastestNews';
+import News from './components/News';
 import CallToAction from './components/CallToAction';
 import Gallery from './components/Gallery';
 import SocialMedia from './components/SocialMedia';
+import Form from './components/Form';
 import Footer from './components/Footer';
 
 const App: React.FC = () => {
   return (
     <div className="dark:bg-slate-900">
       <Header />
-
-      {/* <HeaderVideoContent /> */}
-
-      {/* <section id="video-player">
-        <VideoPlayer />
-      </section> */}
 
       <section id="video-player">
         <VideoPlayerDash />
@@ -39,9 +33,13 @@ const App: React.FC = () => {
         <Sapras />
       </section>
 
-      <section id="latest-news">
-        <LastestNews />
+      <section id="News">
+        <News />
       </section>
+
+      {/* <section id="latest-news">
+        <LastestNews />
+      </section> */}
 
       <section id="call-to-action">
         <CallToAction />
@@ -53,6 +51,10 @@ const App: React.FC = () => {
 
       <section id="sosmed">
         <SocialMedia />
+      </section>
+
+      <section id="form">
+        <Form />
       </section>
 
       <section id="footer">
