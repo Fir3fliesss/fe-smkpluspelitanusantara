@@ -2,7 +2,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-// import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import BannerText from "./BannerText";
 import Button from "./Button";
 import jurusan from "../assets/images/informasi_bidang_keahlian.webp";
@@ -13,6 +13,25 @@ const News: React.FC = () => {
   );
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
+
+  const { data, error, isError } = useQuery({
+    queryKey: ['news'],
+    queryFn: async () => 
+      await fetch('https://api.smkpluspnb.sch.id/api/api/v1/berita/show', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }).then((res) =>
+        res.json()
+      ),
+  });
+
+  if (isError) {
+    console.error('error: ', error);
+  }
+
+  console.log(data);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -230,9 +249,9 @@ const cards = [
           voluptatum possimus dicta deleniti delectus suscipit dolores provident
           accusamus, quidem ut enim est vero. Tempora ipsa sint aliquid. Iure
           accusantium magni dolores deserunt debitis. Porro perspiciatis soluta
-          Haloooooooooooooooooooooooo
-          quas, voluptatem doloribus beatae repudiandae fugit quaerat at
-          dolorem, explicabo rerum cumque quasi aspernatur illo. Non, laborum.
+          Haloooooooooooooooooooooooo quas, voluptatem doloribus beatae
+          repudiandae fugit quaerat at dolorem, explicabo rerum cumque quasi
+          aspernatur illo. Non, laborum.
         </p>
       );
     },
