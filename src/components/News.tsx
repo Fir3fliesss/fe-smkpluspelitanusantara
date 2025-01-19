@@ -5,42 +5,47 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useQuery } from "@tanstack/react-query";
 import BannerText from "./BannerText";
 import Button from "./Button";
-import jurusan from "../assets/images/informasi_bidang_keahlian.webp";
+
+interface NewsItem {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  content: string;
+  updated_at: string;
+  author: string;
+  tags: string[];
+}
 
 const News: React.FC = () => {
-  const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(
-    null
-  );
+  const [active, setActive] = useState<NewsItem | null>(null);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
-  const { data, error, isError } = useQuery({
+  const { data, error, isError, isLoading } = useQuery({
     queryKey: ['news'],
-    queryFn: async () => 
-      await fetch('https://api.smkpluspnb.sch.id/api/api/v1/berita/show', {
+    queryFn: async () => {
+      const response = await fetch('https://api.smkpluspnb.sch.id/api/api/v1/berita/show', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        }
-      }).then((res) =>
-        res.json()
-      ),
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    },
   });
-
-  if (isError) {
-    console.error('error: ', error);
-  }
-
-  console.log(data);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setActive(false);
+        setActive(null);
       }
     }
 
-    if (active && typeof active === "object") {
+    if (active) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -52,11 +57,21 @@ const News: React.FC = () => {
 
   useOutsideClick(ref, () => setActive(null));
 
+  // Tampilkan loading atau error tanpa mengganggu urutan Hooks
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    console.error('Error fetching news:', error);
+    return <div>Error fetching news data.</div>;
+  }
+
   return (
     <>
       <BannerText text="Latest News!" />
       <AnimatePresence>
-        {active && typeof active === "object" && (
+        {active && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -66,23 +81,14 @@ const News: React.FC = () => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {active && typeof active === "object" ? (
-          <div className="fixed inset-0  grid place-items-center z-[100]">
+        {active ? (
+          <div className="fixed inset-0 grid place-items-center z-[100]">
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
-              initial={{
-                opacity: 0,
-              }}
-              animate={{
-                opacity: 1,
-              }}
-              exit={{
-                opacity: 0,
-                transition: {
-                  duration: 0.05,
-                },
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
               onClick={() => setActive(null)}
             >
@@ -91,7 +97,7 @@ const News: React.FC = () => {
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[500px]  h-full md:h-fit md:max-h-[90%]  flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
+              className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
@@ -99,15 +105,14 @@ const News: React.FC = () => {
                   decoding="async"
                   width={200}
                   height={200}
-                  src={active.src}
+                  src={active.image}
                   alt={active.title}
                   className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
                 />
               </motion.div>
-
               <div>
                 <div className="flex justify-between items-start p-4">
-                  <div className="">
+                  <div>
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
                       className="font-medium text-neutral-700 dark:text-neutral-200 text-base"
@@ -121,18 +126,6 @@ const News: React.FC = () => {
                       {active.description}
                     </motion.p>
                   </div>
-
-                  <motion.a
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    href={active.ctaLink}
-                    target="_blank"
-                    className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
-                  >
-                    {active.ctaText}
-                  </motion.a>
                 </div>
                 <div className="pt-4 relative px-4">
                   <motion.div
@@ -142,9 +135,7 @@ const News: React.FC = () => {
                     exit={{ opacity: 0 }}
                     className="text-neutral-600 text-xs md:text-sm lg:text-base h-40 md:h-fit pb-10 flex flex-col items-start gap-4 overflow-auto dark:text-neutral-400 [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch]"
                   >
-                    {typeof active.content === "function"
-                      ? active.content()
-                      : active.content}
+                    {active.content}
                   </motion.div>
                 </div>
               </div>
@@ -153,38 +144,37 @@ const News: React.FC = () => {
         ) : null}
       </AnimatePresence>
       <ul className="max-w-2xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4">
-        {cards.map((card) => (
-          <li key={card.title}>
+        {data?.data.map((item: NewsItem) => (
+          <li key={item.id}>
             <motion.div
-              layoutId={`card-${card.title}-${id}`}
-              key={`card-${card.title}-${id}`}
-              onClick={() => setActive(card)}
-              className="p-4 flex flex-col  hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
+              layoutId={`card-${item.title}-${id}`}
+              onClick={() => setActive(item)}
+              className="p-4 flex flex-col hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
             >
-              <div className="flex gap-4 flex-col  w-full">
-                <motion.div layoutId={`image-${card.title}-${id}`}>
+              <div className="flex gap-4 flex-col w-full">
+                <motion.div layoutId={`image-${item.title}-${id}`}>
                   <img
                     loading="lazy"
                     decoding="async"
                     width={100}
                     height={100}
-                    src={card.src}
-                    alt={card.title}
-                    className="h-60 w-full  rounded-lg object-cover object-top"
+                    src={item.image}
+                    alt={item.title}
+                    className="h-60 w-full rounded-lg object-cover object-top"
                   />
                 </motion.div>
                 <div className="flex justify-center items-center flex-col">
                   <motion.h3
-                    layoutId={`title-${card.title}-${id}`}
+                    layoutId={`title-${item.title}-${id}`}
                     className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left text-base"
                   >
-                    {card.title}
+                    {item.title}
                   </motion.h3>
                   <motion.p
-                    layoutId={`description-${card.description}-${id}`}
+                    layoutId={`description-${item.description}-${id}`}
                     className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base"
                   >
-                    {card.description}
+                    {item.description}
                   </motion.p>
                 </div>
               </div>
@@ -204,18 +194,9 @@ export default News;
 export const CloseIcon = () => {
   return (
     <motion.svg
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-        transition: {
-          duration: 0.05,
-        },
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
@@ -233,90 +214,3 @@ export const CloseIcon = () => {
     </motion.svg>
   );
 };
-
-const cards = [
-  {
-    description: "lorem ",
-    title: "News 1",
-    src: jurusan,
-    ctaText: "Baca lebih detail",
-    ctaLink: "smkpluspnb.sch.id",
-    content: () => {
-      return (
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci,
-          quo consequatur accusantium aspernatur excepturi cumque nostrum
-          voluptatum possimus dicta deleniti delectus suscipit dolores provident
-          accusamus, quidem ut enim est vero. Tempora ipsa sint aliquid. Iure
-          accusantium magni dolores deserunt debitis. Porro perspiciatis soluta
-          Haloooooooooooooooooooooooo quas, voluptatem doloribus beatae
-          repudiandae fugit quaerat at dolorem, explicabo rerum cumque quasi
-          aspernatur illo. Non, laborum.
-        </p>
-      );
-    },
-  },
-  {
-    description: "lorem ipsum dolor",
-    title: "News 2",
-    src: jurusan,
-    ctaText: "Baca lebih detail",
-    ctaLink: "smkpluspnb.sch.id",
-    content: () => {
-      return (
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum,
-          facilis corporis. Expedita reiciendis iure a, perspiciatis
-          exercitationem adipisci illum officiis, ipsum distinctio culpa laborum
-          dicta porro praesentium, debitis eius sequi. Libero distinctio tempore
-          accusantium, architecto commodi nemo nulla minus iusto et earum
-          similique beatae recusandae suscipit dicta doloremque, placeat illo
-          eaque natus consequuntur fugiat laborum quisquam vero nihil nostrum.
-          Aliquid!
-        </p>
-      );
-    },
-  },
-
-  {
-    description: "lorem ipsum, lorem ipsum",
-    title: "News 3",
-    src: jurusan,
-    ctaText: "Baca lebih detail",
-    ctaLink: "smkpluspnb.sch.id",
-    content: () => {
-      return (
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam
-          ipsum nulla porro iusto animi quibusdam ipsa, magnam odio
-          consequuntur! Alias officia pariatur eaque quo rerum modi deserunt
-          exercitationem sequi maxime? Deleniti excepturi veritatis incidunt
-          dolorem ut vel perferendis impedit odit consectetur harum quis est
-          enim inventore, eos quidem tempora nemo totam nam ab quod nobis dolor.
-          Impedit debitis enim aut!
-        </p>
-      );
-    },
-  },
-  {
-    description: "lorem ipsum dolor sit amet",
-    title: "News 4",
-    src: jurusan,
-    ctaText: "Baca lebih detail",
-    ctaLink: "smkpluspnb.sch.id",
-    content: () => {
-      return (
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
-          consequatur perspiciatis commodi necessitatibus! Asperiores sint
-          voluptate placeat iusto quis, officia quia recusandae perferendis
-          autem debitis expedita illum saepe voluptatibus qui. Deleniti minus
-          voluptatibus totam labore voluptate at nostrum. Facilis architecto sit
-          nemo enim perspiciatis sunt blanditiis consequatur sed, eaque
-          adipisci, explicabo consequuntur veniam accusantium? Deleniti dolor
-          esse aut repellat nostrum!
-        </p>
-      );
-    },
-  },
-];
