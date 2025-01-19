@@ -3,39 +3,21 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useQuery } from "@tanstack/react-query";
-import BannerText from "./BannerText";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
-
-interface NewsItem {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  content: string;
-  updated_at: string;
-  author: string;
-  tags: string[];
-}
+import { getBerita } from "@/api/apiBerita";
+import { NewsItem } from "@/api/apiBerita";
 
 const News: React.FC = () => {
+  const navigate = useNavigate();
   const [active, setActive] = useState<NewsItem | null>(null);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
-  const { data, error, isError, isLoading } = useQuery({
+  // Fetch data dari API menggunakan useQuery
+  const { data, error, isError, isLoading } = useQuery<NewsItem[]>({
     queryKey: ['news'],
-    queryFn: async () => {
-      const response = await fetch('https://api.smkpluspnb.sch.id/api/api/v1/berita/show', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    },
+    queryFn: getBerita, // Gunakan fungsi getBerita dari apiBerita.ts
   });
 
   useEffect(() => {
@@ -68,8 +50,7 @@ const News: React.FC = () => {
   }
 
   return (
-    <>
-      <BannerText text="Latest News!" />
+    <div>
       <AnimatePresence>
         {active && (
           <motion.div
@@ -82,7 +63,7 @@ const News: React.FC = () => {
       </AnimatePresence>
       <AnimatePresence>
         {active ? (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
+          <div className="fixed inset-0 grid place-items-center z-[100] mt-2 md:mt-24">
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
@@ -126,6 +107,21 @@ const News: React.FC = () => {
                       {active.description}
                     </motion.p>
                   </div>
+                  {/* Tombol "Visit" di modal */}
+                  <motion.a
+                    onClick={() => navigate(`/news/${id}`)}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    href="/news/${active.id}"
+                    rel="noopener noreferrer"
+                    referrerPolicy="no-referrer"
+                    target="_blank"
+                    className="px-3 py-2 text-sm rounded-full font-bold bg-gradient-to-tr from-red-800 via-red-700 to-red-600 text-white hover:bg-gradient-to-br hover:from-red-700 hover:via-red-800 hover:to-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-100 focus:ring-red-600 transition-all duration-300 ease-in-out"
+                  >
+                    Kunjungi
+                  </motion.a>
                 </div>
                 <div className="pt-4 relative px-4">
                   <motion.div
@@ -144,7 +140,7 @@ const News: React.FC = () => {
         ) : null}
       </AnimatePresence>
       <ul className="max-w-2xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 items-start gap-4">
-        {data?.data.map((item: NewsItem) => (
+        {data?.map((item: NewsItem) => (
           <li key={item.id}>
             <motion.div
               layoutId={`card-${item.title}-${id}`}
@@ -182,10 +178,10 @@ const News: React.FC = () => {
           </li>
         ))}
       </ul>
-      <div className="flex justify-center">
-        <Button text="Lihat Lebih Banyak" />
+      <div className="flex justify-center mt-10">
+        <Button text="Lihat Lebih Banyak Berita" />
       </div>
-    </>
+    </div>
   );
 };
 

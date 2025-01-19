@@ -4,7 +4,7 @@ import banner from '../assets/images/banner_ajakan_bergabung.webp';
 
 const CallToAction: React.FC = () => {
   return (
-    <section className="mt-6 md:mt-8 xl:mt-16">
+    <section id='' className="mt-6 md:mt-8 xl:mt-16">
       <div className="relative">
         <img
           className="object-cover w-full h-[580px] xl:h-[700px] brightness-50"

@@ -1,11 +1,13 @@
 "use client";
 import React from 'react';
-// import { useQuery } from '@tanstack/react-query'; // Komentari ini
+import { useQuery } from '@tanstack/react-query';
 import { useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import jurusan from '../assets/images/informasi_bidang_keahlian.webp';
+import { getGaleri } from '@/api/apiGaleri';
+import { GaleriItem } from '@/api/apiGaleri';
+import Button from '@/components/Button';
 
 interface GalleryImage {
   id: string;
@@ -14,87 +16,7 @@ interface GalleryImage {
   title: string;
 }
 
-// useQuery - testing static
-// const fetchGalleryImages = async (): Promise<GalleryImage[]> => {
-//   const response = await fetch('/api/gallery');
-//   if (!response.ok) {
-//     throw new Error('Gagal woi');
-//   }
-//   return response.json();
-// };
-
-
-const staticGalleryImages: GalleryImage[] = [
-  {
-    id: '1',
-    src: jurusan,
-    alt: 'Gambar 1',
-    title: 'Judul Gambar 1',
-  },
-  {
-    id: '2',
-    src: jurusan,
-    alt: 'Gambar 2',
-    title: 'Judul Gambar 2',
-  },
-  {
-    id: '3',
-    src: jurusan,
-    alt: 'Gambar 3',
-    title: 'Judul Gambar 3',
-  },
-    {
-    id: '1',
-    src: jurusan,
-    alt: 'Gambar 1',
-    title: 'Judul Gambar 1',
-  },
-  {
-    id: '2',
-    src: jurusan,
-    alt: 'Gambar 2',
-    title: 'Judul Gambar 2',
-  },
-  {
-    id: '3',
-    src: jurusan,
-    alt: 'Gambar 3',
-    title: 'Judul Gambar 3',
-  },
-  {
-    id: '1',
-    src: jurusan,
-    alt: 'Gambar 1',
-    title: 'Judul Gambar 1',
-  },
-  {
-    id: '2',
-    src: jurusan,
-    alt: 'Gambar 2',
-    title: 'Judul Gambar 2',
-  },
-  {
-    id: '3',
-    src: jurusan,
-    alt: 'Gambar 3',
-    title: 'Judul Gambar 3',
-  },
-];
-
 const Gallery: React.FC = () => {
-  // useQuery
-  // const {
-  //   data: galleryImages,
-  //   isLoading,
-  //   isError,
-  // } = useQuery<GalleryImage[]>({
-  //   queryKey: ['galleryImages'],
-  //   queryFn: fetchGalleryImages,
-  // });
-
-  // data statis
-  const galleryImages = staticGalleryImages;
-
   const gridRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     container: gridRef,
@@ -105,27 +27,38 @@ const Gallery: React.FC = () => {
   const translateSecond = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const translateThird = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
-  // loading dan error
-  // if (isLoading) {
-  //   return <div className="text-center mt-8 text-gray-900 dark:text-slate-200">Loading...</div>;
-  // }
+  const { data: galleryImages, isLoading, isError } = useQuery<GaleriItem[]>({
+    queryKey: ['galeri'],
+    queryFn: getGaleri,
+  });
 
-  // if (isError) {
-  //   return <div className="text-center mt-8 text-red-600">Error fetching data.</div>;
-  // }
+  if (isLoading) {
+    return <div className="text-center mt-8 text-gray-900 dark:text-slate-200">Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className="text-center mt-8 text-red-600">Error fetching data.</div>;
+  }
 
   if (!galleryImages || galleryImages.length === 0) {
     return <div className="text-center mt-8 text-gray-900 dark:text-slate-200">Gada gambarnya lekku</div>;
   }
 
-  const third = Math.ceil(galleryImages.length / 3);
-  const firstPart = galleryImages.slice(0, third);
-  const secondPart = galleryImages.slice(third, 2 * third);
-  const thirdPart = galleryImages.slice(2 * third);
+  const transformedImages: GalleryImage[] = galleryImages.map((item) => ({
+    id: item.id,
+    src: item.image,
+    alt: item.title,
+    title: item.title,
+  }));
+
+  const third = Math.ceil(transformedImages.length / 3);
+  const firstPart = transformedImages.slice(0, third);
+  const secondPart = transformedImages.slice(third, 2 * third);
+  const thirdPart = transformedImages.slice(2 * third);
 
   return (
     <section id="galeri" className="ml-8 mr-8">
-      <h1 className="font-bold text-2xl text-center mt-6 mb-6 text-gray-900 dark:text-slate-200">
+      <h1 className="font-bold text-2xl text-center mt-10 text-gray-900 dark:text-slate-200">
         <u>ALBUM</u>
       </h1>
 
@@ -159,6 +92,9 @@ const Gallery: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div className='flex justify-center mt-2'>
+        <Button text="Lihat Lebih Banyak Galeri" />
       </div>
     </section>
   );

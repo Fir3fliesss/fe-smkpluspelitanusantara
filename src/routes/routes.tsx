@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '@/App';
 import MainPages from '@/pages/MainPages';
 import DetailNews from '@/pages/DetailNews';
-import NewsList from '@/pages/ListNews';
+// import NewsList from '@/pages/ListNews';
 
 const router = createBrowserRouter([
   {
@@ -16,14 +16,14 @@ const router = createBrowserRouter([
     ],
     },
     {
-        path: '/news',
-        element: <NewsList />,
-        children: [
-            {
-                path: '/news/:id',
-                element: <DetailNews />,
-            },
-        ],
+        path: '/news/:id',
+        element: <DetailNews />,
+        // children: [
+        //     {
+        //         path: '/news/:id',
+        //         element: <DetailNews />,
+        //     },
+        // ],
     },
     {
     path: "*",

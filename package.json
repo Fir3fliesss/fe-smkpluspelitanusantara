@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-router": "^1.97.3",
+    "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "dashjs": "^4.7.4",
     "framer-motion": "^11.18.0",

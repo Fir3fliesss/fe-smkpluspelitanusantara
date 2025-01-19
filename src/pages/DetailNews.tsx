@@ -1,26 +1,17 @@
 import React from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams
 import { useQuery } from '@tanstack/react-query';
-
-interface NewsData {
-  title: string;
-  subtitle: string;
-  images: string;
-  author: string;
-  updated_at: string;
-  description: string;
-  tags: string[];
-}
-
-const fetchNews = async (): Promise<NewsData> => {
-  const response = await fetch('api.smkpluspnb.sch.id/api/api/v1/berita/show');
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  return response.json();
-};
+import { getDetailBerita } from '@/api/apiDetailBerita';
+import { NewsDetail } from '@/api/apiDetailBerita';
 
 const DetailNews: React.FC = () => {
-  const { data, error, isLoading } = useQuery<NewsData, Error>(['news'], fetchNews);
+  const { id } = useParams<{ id: string }>(); // Ambil id dari URL
+
+  // Fetch data detail berita menggunakan useQuery
+  const { data, error, isLoading } = useQuery<NewsDetail, Error>({
+    queryKey: ['detailBerita', id],
+    queryFn: () => getDetailBerita(id!), // Panggil fungsi getDetailBerita dengan ID
+  });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
