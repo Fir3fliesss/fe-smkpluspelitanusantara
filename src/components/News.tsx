@@ -5,8 +5,7 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
-import { getBerita } from "@/api/apiBerita";
-import { NewsItem } from "@/api/apiBerita";
+import { getBerita, NewsItem } from "@/api/apiBerita";
 
 const News: React.FC = () => {
   const navigate = useNavigate();
@@ -39,7 +38,6 @@ const News: React.FC = () => {
 
   useOutsideClick(ref, () => setActive(null));
 
-  // Tampilkan loading atau error tanpa mengganggu urutan Hooks
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -50,7 +48,7 @@ const News: React.FC = () => {
   }
 
   return (
-    <div>
+    <div id="berita">
       <AnimatePresence>
         {active && (
           <motion.div
@@ -88,7 +86,7 @@ const News: React.FC = () => {
                   height={200}
                   src={active.image}
                   alt={active.title}
-                  className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
+                  className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top border"
                 />
               </motion.div>
               <div>
@@ -101,20 +99,22 @@ const News: React.FC = () => {
                       {active.title}
                     </motion.h3>
                     <motion.p
-                      layoutId={`description-${active.description}-${id}`}
+                      layoutId={`description-${active.subtitle}-${id}`} // Gunakan `subtitle`
                       className="text-neutral-600 dark:text-neutral-400 text-base"
                     >
-                      {active.description}
+                      {active.subtitle}
                     </motion.p>
                   </div>
-                  {/* Tombol "Visit" di modal */}
                   <motion.a
-                    onClick={() => navigate(`/news/${id}`)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/news/${active.berita_id}`);
+                      window.location.reload();
+                    }}
                     layout
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    href="/news/${active.id}"
                     rel="noopener noreferrer"
                     referrerPolicy="no-referrer"
                     target="_blank"
@@ -154,7 +154,7 @@ const News: React.FC = () => {
                     decoding="async"
                     width={100}
                     height={100}
-                    src={item.image}
+                    src={item.image} // Gunakan `image`, bukan `images`
                     alt={item.title}
                     className="h-60 w-full rounded-lg object-cover object-top"
                   />
@@ -167,10 +167,10 @@ const News: React.FC = () => {
                     {item.title}
                   </motion.h3>
                   <motion.p
-                    layoutId={`description-${item.description}-${id}`}
+                    layoutId={`description-${item.subtitle}-${id}`} // Gunakan `subtitle`
                     className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base"
                   >
-                    {item.description}
+                    {item.subtitle}
                   </motion.p>
                 </div>
               </div>
@@ -178,7 +178,9 @@ const News: React.FC = () => {
           </li>
         ))}
       </ul>
-      <div className="flex justify-center mt-10">
+      <div className="flex justify-center mt-10"
+        onClick={() => navigate('/list-news')}
+      >
         <Button text="Lihat Lebih Banyak Berita" />
       </div>
     </div>

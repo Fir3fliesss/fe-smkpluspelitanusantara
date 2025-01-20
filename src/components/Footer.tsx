@@ -2,6 +2,9 @@ import React from 'react';
 import locationIcon from '../assets/icons/location-sign-svgrepo-com.svg';
 
 const Footer: React.FC = () => {
+
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="relative w-full px-5 border-t border-gray-800 bg-gray-100 dark:bg-gray-900">
       <div className="w-full px-8 mx-auto">
@@ -127,7 +130,7 @@ const Footer: React.FC = () => {
 
         <div className="flex flex-col items-center justify-center py-4 mt-5 border-t border-gray-800 md:flex-row md:justify-between">
           <p className="mb-4 text-sm text-gray-900 dark:text-slate-200 text-center md:mb-0">
-            © 2024 SMK PLUS PELITA NUSANTARA. All Rights Reserved.
+            © {currentYear} SMK PLUS PELITA NUSANTARA. All Rights Reserved.
           </p>
           <div className="flex gap-4">
             {[

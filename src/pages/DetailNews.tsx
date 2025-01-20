@@ -1,60 +1,75 @@
 import React from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getDetailBerita } from '@/api/apiDetailBerita';
 import { NewsDetail } from '@/api/apiDetailBerita';
+import { Facebook, Instagram, Twitter } from 'lucide-react'; // Impor ikon Lucide
 
 const DetailNews: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // Ambil id dari URL
+  const { berita_id } = useParams<{ berita_id: string }>();
 
-  // Fetch data detail berita menggunakan useQuery
   const { data, error, isLoading } = useQuery<NewsDetail, Error>({
-    queryKey: ['detailBerita', id],
-    queryFn: () => getDetailBerita(id!), // Panggil fungsi getDetailBerita dengan ID
+    queryKey: ['berita_id', berita_id],
+    queryFn: () => getDetailBerita(berita_id!),
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
-      <h1>Detail News</h1>
+    <div className="dark:bg-slate-900 dark:text-gray-200 my-10">
       <div className="max-w-screen-sm mx-auto px-8">
-        <h1 className="title mr-3 mt-5 text-justify font-extrabold text-wrap-2 text-balance">
+        <h1 className="title text-4xl mr-3 mt-5 font-extrabold">
           {data?.title}
         </h1>
-        <p className="subtitle mt-3 text-red-700 text-balance">
+        <p className="subtitle mt-3 text-red-700 dark:text-red-600 text-balance">
           {data?.subtitle}
         </p>
-        <p className="text-zinc-800 opacity-50">
-          {data?.updated_at} | Author: {data?.author}
+        <p className="text-zinc-800 dark:text-zinc-200 opacity-50">
+          {data?.updated_at.split('T')[0]} | Author: {data?.author}
         </p>
-        <div className="flex">
-          <p className="mt-3 h-0 text-sm">Bagikan :</p>
-          <a href="" title='facebook'></a>
-          <img
-            className="w-3 ml-2 mt-4"
-            src="./assets/facebook-svgrepo-com.svg"
-            alt="logo-fb"
-          />
-          <a href="" title='instagram'></a>
-          <img
-            className="w-3 ml-2 mt-5"
-            src="./assets/instagram-2016-logo-svgrepo-com.svg"
-            alt="logo-ig"
-          />
-          <a href="" title='twitter'></a>
-          <img
-            className="w-4 ml-2 mt-5"
-            src="./assets/icons8-twitterx.svg"
-            alt="logo-x"
-          />
+        <div className="flex items-center mt-3">
+          <p className="text-sm">Bagikan :</p>
+          {/* Facebook */}
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+              window.location.href
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Facebook"
+            className="ml-2 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400"
+          >
+            <Facebook className="w-5 h-5" />
+          </a>
+          {/* Instagram */}
+          <a
+            href="https://www.instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Instagram"
+            className="ml-2 text-gray-700 dark:text-gray-200 hover:text-pink-600 dark:hover:text-pink-400"
+          >
+            <Instagram className="w-5 h-5" />
+          </a>
+          {/* Twitter */}
+          <a
+            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+              window.location.href
+            )}&text=${encodeURIComponent(data?.title || '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Twitter"
+            className="ml-2 text-gray-700 dark:text-gray-200 hover:text-blue-400 dark:hover:text-blue-300"
+          >
+            <Twitter className="w-5 h-5" />
+          </a>
         </div>
 
         <img
-          src={data?.images}
-          alt="Foto-Dss"
-          title="Foto-Dss"
+          src={`https://api.smkpluspnb.sch.id/storage/${data?.images}`}
+          alt={data?.title}
+          title={data?.title}
           className="rounded-xl mt-4 shadow-xl mb-5"
         />
 

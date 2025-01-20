@@ -17,6 +17,7 @@
     "dashjs": "^4.7.4",
     "framer-motion": "^11.18.0",
     "hls.js": "^1.5.19",
+    "lucide-react": "^0.473.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-responsive-carousel": "^3.2.23",

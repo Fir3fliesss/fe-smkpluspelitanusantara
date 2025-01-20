@@ -30,16 +30,16 @@ const MainPages: React.FC = () => {
             <section id="banner" className='my-16'>
                 <BannerText text="Latest News" />
             </section>
-            <section id="News">
+            <section id="news">
                 <News />
             </section>
             <section id="call-to-action">
                 <CallToAction />
             </section>
-            <section id="galeri">
+            <section id="gallery">
                 <Gallery />
             </section>
-            <section id="sosmed">
+            <section id="medsoc">
                 <SocialMedia />
             </section>
         </>
