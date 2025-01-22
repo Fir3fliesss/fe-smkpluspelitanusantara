@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className='px-1 py-1 flex items-center sticky top-0 bg-white shadow-lg backdrop-blur-[1.75px] z-[999] dark:bg-gray-800 dark:text-slate-200 scroll-smooth'>
+    <header className='px-1 py-1 flex items-center sticky top-0 bg-white shadow-lg backdrop-blur-[1.75px] z-[999] dark:bg-gray-800 dark:text-slate-200 scroll-smooth left-0 right-0 justify-center md:justify-normal'>
       <a href='/'>
         <img
           src={isDarkMode ? logoDarkMode : logoLightMode}
@@ -57,7 +57,7 @@ const Header: React.FC = () => {
         </Link>
       </div>
 
-      <div className="md:hidden flex items-center ml-auto">
+      <div className="md:hidden flex !important left-0 right-0 ml-auto" style={{left: '0'}}>
         <button
           title='Menu'
           onClick={toggleMobileMenu}
@@ -81,13 +81,13 @@ const Header: React.FC = () => {
       <div
         className={`md:hidden mobile-menu flex ${
           isMobileMenuOpen ? 'block' : 'hidden'
-        } w-full absolute top-16 left-0 bg-white dark:bg-gray-800 shadow-lg animate__animated animate__fadeIn`}
+        } w-full absolute top-14 justify-around bg-white dark:bg-gray-800 shadow-lg animate__animated animate__fadeIn`}
       >
         <Link
           to="video-player"
           smooth={true}
           duration={500}
-          className="block py-2 px-4 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
+          className="block py-2 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
           onClick={toggleMobileMenu}
         >
           Beranda
@@ -96,7 +96,7 @@ const Header: React.FC = () => {
           to="berita"
           smooth={true}
           duration={500}
-          className="block py-2 px-4 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
+          className="block py-2 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
           onClick={toggleMobileMenu}
         >
           Berita
@@ -105,7 +105,7 @@ const Header: React.FC = () => {
           to="galeri"
           smooth={true}
           duration={500}
-          className="block py-2 px-4 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
+          className="block py-2 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
           onClick={toggleMobileMenu}
         >
           Galeri
@@ -114,7 +114,7 @@ const Header: React.FC = () => {
           to="sosmed"
           smooth={true}
           duration={500}
-          className="block py-2 px-4 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
+          className="block py-2 text-sm hover:bg-gray-200 hover:text-red-600 font-medium"
           onClick={toggleMobileMenu}
         >
           Sosial Media
