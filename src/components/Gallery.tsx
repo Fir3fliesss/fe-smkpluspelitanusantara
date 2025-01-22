@@ -96,7 +96,7 @@ const Gallery: React.FC = () => {
         </div>
       </div>
       <div className='flex justify-center mt-2'
-        onClick={() => navigate('/full-galeri')}
+        onClick={() => navigate('/full-album')}
       >
         <Button text="Lihat Full Album" />
       </div>
