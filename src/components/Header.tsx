@@ -59,6 +59,7 @@ const Header: React.FC = () => {
 
       <div className="md:hidden flex items-center ml-auto">
         <button
+          title='Menu'
           onClick={toggleMobileMenu}
           className="mobile-menu-button p-2 focus:outline-none"
         >

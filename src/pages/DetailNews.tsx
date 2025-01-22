@@ -112,13 +112,13 @@ const DetailNews: React.FC = () => {
 
         <div className="flex">
           <div className="mt-5 bg-red-700 h-7 w-2"></div>
-          <h1 className="font-extrabold h-0 ml-2 mt-5">Tagar</h1>
+          <h1 className="font-extrabold h-0 ml-2 mt-5 text-slate-100">Tagar</h1>
         </div>
         <div className="flex text-center mt-5">
           {data.data.tags.map((tag, index) => (
             <div
               key={index}
-              className="bg-green-700 rounded-md w-20 ml-4 cursor-pointer hover:bg-green-800"
+              className="bg-green-700 text-slate-100 rounded-md w-20 ml-4 cursor-pointer hover:bg-green-800"
               onClick={() => navigate(`/list-news?tag=${tag}`)}
             >
               <div className="text-sm text-white">#{tag}</div>

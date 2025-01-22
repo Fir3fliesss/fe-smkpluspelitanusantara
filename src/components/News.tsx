@@ -60,7 +60,7 @@ const News: React.FC = () => {
       </AnimatePresence>
       <AnimatePresence>
         {active ? (
-          <div className="fixed inset-0 grid place-items-center z-[100] mt-2 md:mt-24">
+          <div className="fixed inset-0 grid place-items-center z-[100] mt-2 md:mt-10 md:mb-10">
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
