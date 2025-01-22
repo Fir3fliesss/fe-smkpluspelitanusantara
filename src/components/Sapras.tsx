@@ -46,7 +46,7 @@ const Sapras: React.FC = () => {
               <img
                 src={image.src}
                 alt={image.title}
-                className="rounded-lg w-full h-[27rem] object-cover" loading='lazy'
+                className="rounded-lg w-full h-56 md:h-[27rem] object-cover" loading='lazy'
               />
               <p className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center text-sm text-white bg-black bg-opacity-50 px-4 py-2 rounded-lg z-10">{image.title}</p>
             </div>

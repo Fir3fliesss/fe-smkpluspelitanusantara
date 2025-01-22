@@ -1,6 +1,11 @@
 import axios from "axios";
 
-// Definisikan tipe untuk data detail berita dari API
+export interface RecommendedNews {
+  berita_id: string;
+  title: string;
+  images: string;
+}
+
 export interface NewsDetail {
   id: number;
   berita_id: string;
@@ -10,16 +15,26 @@ export interface NewsDetail {
   description: string;
   images: string;
   tags: string[];
+  status: number;
+  created_at: string;
   updated_at: string;
 }
 
-const getDetailBerita = async (id: string): Promise<NewsDetail> => {
+export interface ApiResponse {
+  message: string;
+  data: NewsDetail;
+  recommended: RecommendedNews[];
+}
+
+const getDetailBerita = async (berita_id: string): Promise<ApiResponse> => {
   try {
-    const response = await axios.get(`https://api.smkpluspnb.sch.id/api/api/v1/berita/show/${id}`);
-    return response.data.data; // Sesuaikan dengan struktur respons API
+    const response = await axios.get(
+      `https://api.smkpluspnb.sch.id/api/api/v1/misc/berita/${berita_id}`
+    );
+    return response.data; 
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to fetch detail berita');
+    throw new Error("Failed to fetch detail berita");
   }
 };
 

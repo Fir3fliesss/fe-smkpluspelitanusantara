@@ -1,13 +1,11 @@
 import axios from "axios";
 
-// Definisikan tipe untuk data sarana dari API
 interface SaranaItem {
   sarana_id: string;
   image: string;
   title: string;
 }
 
-// Definisikan tipe SaprasImage
 interface SaprasImage {
   id: string;
   src: string;

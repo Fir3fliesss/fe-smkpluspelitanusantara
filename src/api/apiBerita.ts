@@ -16,7 +16,9 @@ interface ApiBeritaItem {
 
 interface NewsItem {
   id: number;
+  berita_id: string;
   title: string;
+  subtitle: string;
   description: string;
   image: string;
   content: string;
@@ -32,8 +34,10 @@ const getBerita = async (): Promise<NewsItem[]> => {
 
     const newsList = beritaData.map((item: ApiBeritaItem) => ({
       id: item.id,
+      berita_id: item.berita_id,
       title: item.title,
-      description: item.subtitle,
+      subtitle: item.subtitle,
+      description: item.description,
       image: `https://api.smkpluspnb.sch.id/storage/${item.images}`,
       content: item.description,
       updated_at: item.updated_at,

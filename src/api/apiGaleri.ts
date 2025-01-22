@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Definisikan tipe untuk data galeri dari API
 interface ApiGaleriItem {
   id: number;
   galeri_id: string;
@@ -11,7 +10,6 @@ interface ApiGaleriItem {
   updated_at: string;
 }
 
-// Definisikan tipe untuk data galeri yang digunakan di komponen
 export interface GaleriItem {
   id: string;
   image: string;
@@ -24,12 +22,11 @@ const getGaleri = async (): Promise<GaleriItem[]> => {
     const response = await axios.get('https://api.smkpluspnb.sch.id/api/api/v1/misc/index');
     const galeriData: ApiGaleriItem[] = response.data.data.galeri;
 
-    // Map data dari API ke bentuk yang sesuai dengan GaleriItem
     const galeriList = galeriData.map((item: ApiGaleriItem) => ({
       id: item.galeri_id,
-      image: `https://api.smkpluspnb.sch.id/storage/${item.image}`, // Mengubah path gambar menjadi URL lengkap
+      image: `https://api.smkpluspnb.sch.id/storage/${item.image}`,
       title: item.title,
-      date: new Date(item.created_at).toLocaleDateString(), // Format tanggal
+      date: new Date(item.created_at).toLocaleDateString(),
     }));
 
     return galeriList;
