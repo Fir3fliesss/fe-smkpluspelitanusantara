@@ -22,4 +22,28 @@ const getListNews = async (): Promise<NewsItem[]> => {
   }
 };
 
+export const getNewsByTag = async (tag: string): Promise<NewsItem[]> => {
+  const response = await fetch(
+    `https://api.smkpluspnb.sch.id/api/api/v1/misc/tag?tag=${tag}`
+  );
+  if (!response.ok) {
+    throw new Error('Gagal mengambil data berita berdasarkan tag');
+  }
+  return response.json();
+};
+
+export const getTags = async (): Promise<string[]> => {
+  const response = await fetch('https://api.smkpluspnb.sch.id/api/api/v1/misc/berita');
+  if (!response.ok) {
+    throw new Error('Gagal mengambil daftar tag');
+  }
+  const data = await response.json();
+
+  const allTags = data.data.flatMap((berita: { tags: string[] }) => berita.tags);
+
+  const uniqueTags: string[] = Array.from(new Set(allTags));
+
+  return uniqueTags;
+
+};
 export { getListNews };

@@ -4,7 +4,7 @@ import Button from "./Button";
 
 const BidangKeahlian: React.FC = () => {
   return (
-    <section className="flex flex-col mx-4">
+    <section className="flex flex-col mx-4 dark:bg-slate-900">
       <div className="xl:ml-64 xl:mr-64 md:ml-32 md:mr-32  mt-8 md:flex md:justify-center xl:justify-center">
         <img
           className="w-full xs:min-w-[55%] sm:min-w-[40%] sm:min-h[40%] rounded-lg border-4 md:border-2"

@@ -7,6 +7,7 @@ import ListAlbum from '@/pages/ListAlbum';
 import News from '@/components/News';
 import Gallery from '@/components/Gallery';
 import SocialMedia from '@/components/SocialMedia';
+import NotFound from '@/pages/404';
 
 const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ const router = createBrowserRouter([
     path: '*',
     element: (
       <>
-        <h1 className='text-center justify-center text-4xl text-red-800 h-screen'>404 - Halaman Tidak Ditemukan</h1>
+        <NotFound />
       </>
     ),
   },

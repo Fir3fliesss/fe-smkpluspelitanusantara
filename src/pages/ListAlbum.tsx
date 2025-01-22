@@ -12,12 +12,10 @@ const ListAlbum: React.FC = () => {
     offset: ['start start', 'end start'],
   });
 
-  // Transformasi untuk efek paralaks
   const translateFirst = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const translateSecond = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const translateThird = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
-  // Mengambil data album dari API
   const { data: albums, isLoading, isError } = useQuery<AlbumItem[]>({
     queryKey: ['albums'],
     queryFn: getListAlbum,
@@ -35,7 +33,6 @@ const ListAlbum: React.FC = () => {
     return <div className="text-center mt-8 text-gray-900 dark:text-slate-200">Tidak ada album tersedia.</div>;
   }
 
-  // Membagi gambar menjadi 3 bagian untuk efek paralaks
   const third = Math.ceil(albums.length / 3);
   const firstPart = albums.slice(0, third);
   const secondPart = albums.slice(third, 2 * third);

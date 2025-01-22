@@ -13,10 +13,9 @@ const News: React.FC = () => {
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
-  // Fetch data dari API menggunakan useQuery
   const { data, error, isError, isLoading } = useQuery<NewsItem[]>({
     queryKey: ['news'],
-    queryFn: getBerita, // Gunakan fungsi getBerita dari apiBerita.ts
+    queryFn: getBerita,
   });
 
   useEffect(() => {
@@ -99,7 +98,7 @@ const News: React.FC = () => {
                       {active.title}
                     </motion.h3>
                     <motion.p
-                      layoutId={`description-${active.subtitle}-${id}`} // Gunakan `subtitle`
+                      layoutId={`description-${active.subtitle}-${id}`}
                       className="text-neutral-600 dark:text-neutral-400 text-base"
                     >
                       {active.subtitle}
@@ -145,7 +144,7 @@ const News: React.FC = () => {
             <motion.div
               layoutId={`card-${item.title}-${id}`}
               onClick={() => setActive(item)}
-              className="p-4 flex flex-col hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
+              className="p-4 flex flex-col hover:bg-neutral-200 dark:hover:bg-gray-800 rounded-xl cursor-pointer border border-neutral-200 dark:border-slate-200 bg-white dark:bg-gray-900 transition-all duration-300 ease-in-out shadow-sm"
             >
               <div className="flex gap-4 flex-col w-full">
                 <motion.div layoutId={`image-${item.title}-${id}`}>
@@ -154,7 +153,7 @@ const News: React.FC = () => {
                     decoding="async"
                     width={100}
                     height={100}
-                    src={item.image} // Gunakan `image`, bukan `images`
+                    src={item.image}
                     alt={item.title}
                     className="h-60 w-full rounded-lg object-cover object-top"
                   />
@@ -167,8 +166,8 @@ const News: React.FC = () => {
                     {item.title}
                   </motion.h3>
                   <motion.p
-                    layoutId={`description-${item.subtitle}-${id}`} // Gunakan `subtitle`
-                    className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base"
+                    layoutId={`description-${item.subtitle}-${id}`}
+                    className="text-neutral-600 dark:text-neutral-400 text-center md:text-left text-base line-clamp-3"
                   >
                     {item.subtitle}
                   </motion.p>
